@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  ingest-api:
+    build: ./services/ingest-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ml-service
+
+  ml-service:
+    build: ./services/ml-service
+    ports:
+      - "8001:8001"
